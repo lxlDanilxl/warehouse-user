@@ -1,5 +1,5 @@
 # Utiliza una imagen base adecuada para tu aplicación
-FROM openjdk:17-jdk-alpine
+FROM maven:3.9-amazoncorretto-17-alpine
 
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
