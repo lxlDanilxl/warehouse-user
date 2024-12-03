@@ -7,6 +7,9 @@ WORKDIR /app
 # Crea un nuevo usuario con un UID no root
 RUN adduser -D -u 1001 appuser
 
+# Cambia la propiedad de los directorios necesarios para el nuevo usuario
+RUN chown -R appuser:appuser /app
+
 # Establece que el contenedor se ejecute como este nuevo usuario no root
 USER appuser
 
