@@ -13,6 +13,9 @@ RUN chown -R appuser:appuser /app
 # Establece que el contenedor se ejecute como este nuevo usuario no root
 USER appuser
 
+# Configura Maven para que use el directorio de trabajo /app para sus archivos generados
+ENV MAVEN_OPTS="-Dmaven.repo.local=/app/.m2"
+
 # Copia el pom.xml para aprovechar el caché
 COPY pom.xml pom.xml
 
@@ -22,9 +25,9 @@ COPY src src
 # Instala las dependencias de Maven
 RUN mvn dependency:go-offline
 
-# Construye la aplicación
-RUN mvn package
+# Construye la aplicación y mueve los archivos generados a /app
+RUN mvn package -DskipTests && mv target/*.jar /app/
 
 # Exporta la aplicación como una imagen Docker
 EXPOSE 8080
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "/app/*.jar"]
