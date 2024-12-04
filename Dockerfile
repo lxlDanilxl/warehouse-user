@@ -27,14 +27,14 @@ COPY pom.xml pom.xml
 COPY src src
 
 # Instala las dependencias de Maven
-RUN mvn dependency:go-offline
+RUN mvn dependency:go-offlin -Dmaven.repo.local=/app/.m2
 
 # Construye la aplicación y mueve los archivos generados a /app
-RUN mvn package -DskipTests
+RUN mvn package -DskipTests -Dmaven.repo.local=/app/.m2
 
 # Mueve los archivos generados a /app
-RUN mv target/*.jar /app/
+RUN mv /app/target/*.jar /app/
 
 # Exporta la aplicación como una imagen Docker
 EXPOSE 8080
-CMD ["java", "-jar", "/app/*.jar"]
+ENTRYPOINT ["java", "-jar", "/app/*.jar"]
