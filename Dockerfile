@@ -14,6 +14,8 @@ RUN mkdir /root/.m2
 
 RUN chown -R appuser:appuser /root/.m2
 
+RUN echo "<localRepository>C:\Users\me\.m2\repo</localRepository>" >> settings.xml
+
 # Establece que el contenedor se ejecute como este nuevo usuario no root
 USER appuser
 
@@ -27,13 +29,14 @@ COPY pom.xml pom.xml
 COPY src src
 
 # Instala las dependencias de Maven
-RUN mvn dependency:go-offlin -Dmaven.repo.local=/app/.m2
+RUN mvn dependency:go-offlin
 
 # Construye la aplicación y mueve los archivos generados a /app
-RUN mvn package -DskipTests -Dmaven.repo.local=/app/.m2
+RUN mvn package -DskipTests
 
 # Mueve los archivos generados a /app
 RUN mv /app/target/*.jar /app/
+
 
 # Exporta la aplicación como una imagen Docker
 EXPOSE 8080
