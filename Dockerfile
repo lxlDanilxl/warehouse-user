@@ -36,7 +36,7 @@ RUN mvn package -DskipTests
 
 # Mueve los archivos generados a /app
 #RUN mv /app/target/*.jar /app/
-
+RUN pwd && ls -la .
 
 # Exporta la aplicación como una imagen Docker
 EXPOSE 8080
