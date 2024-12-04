@@ -29,7 +29,7 @@ COPY pom.xml pom.xml
 COPY src src
 
 # Instala las dependencias de Maven
-RUN mvn dependency:go-offlin
+RUN mvn dependency:go-offline
 
 # Construye la aplicación y mueve los archivos generados a /app
 RUN mvn package -DskipTests
