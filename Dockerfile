@@ -14,7 +14,7 @@ RUN mkdir /root/.m2
 
 RUN chown -R appuser:appuser /root/.m2
 
-RUN echo "<localRepository>C:\Users\me\.m2\repo</localRepository>" >> settings.xml
+RUN echo "<localRepository>/app/.m2/repo</localRepository>" >> settings.xml
 
 # Establece que el contenedor se ejecute como este nuevo usuario no root
 USER appuser
