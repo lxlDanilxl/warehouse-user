@@ -10,8 +10,6 @@ RUN adduser -D -u 1001 appuser
 # Cambia la propiedad de los directorios necesarios para el nuevo usuario
 RUN chown -R appuser:appuser /app
 
-RUN chown -R appuser:appuser /root/.m2
-
 # Establece que el contenedor se ejecute como este nuevo usuario no root
 USER appuser
 
@@ -32,6 +30,8 @@ RUN mvn package -DskipTests
 
 # Mueve los archivos generados a /app
 RUN mv target/*.jar /app/
+
+RUN chown -R appuser:appuser /root/.m2
 
 # Exporta la aplicación como una imagen Docker
 EXPOSE 8080
