@@ -35,9 +35,8 @@ RUN mvn dependency:go-offline
 RUN mvn package -DskipTests
 
 # Mueve los archivos generados a /app
-RUN mv /app/target/*.jar /app/
-RUN pwd && ls -la .
+RUN mv /app/target/*.jar /app/app.jar
 
 # Exporta la aplicación como una imagen Docker
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/target/*.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
