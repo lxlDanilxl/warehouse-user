@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -18,29 +19,14 @@ public class SecurityConfig {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
-    /*
-     * @Bean
-     * public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
-     * Exception {
-     * http
-     * .authorizeHttpRequests(auth -> auth
-     * //.requestMatchers("/api/auth/**").permitAll() // Rutas públicas
-     * .anyRequest().authenticated() // Todas las demás requieren autenticación
-     * )
-     * .addFilterBefore(jwtRequestFilter,
-     * UsernamePasswordAuthenticationFilter.class); // Agrega el filtro JWT
-     * 
-     * return http.build();
-     * }
-     */
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Permite acceso sin autenticación a TODAS las rutas
-                )
-                .csrf(csrf -> csrf.disable()); // Deshabilita CSRF (necesario para APIs REST)
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
